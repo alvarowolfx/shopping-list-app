@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+            <meta charset='UTF-8'/>
+	<title>Iniciando com AngularJS</title>
+            <link rel="stylesheet" type="text/css" href="app/bower_components/bootstrap/dist/css/bootstrap.css">
+</head>
+<body ng-app="curso">
+    <div ng-controller="MainController" class='container'>
+        <div class='jumbotron'>
+            <h3>Lista de compras</h3>
+        </div>
+        <div class='panel panel-default'>
+            <div class='panel-heading'>
+                Item
+            </div>
+            <div class='panel-body'>
+                <form name='itemForm' ng-submit="adicionar(itemForm.$valid)">
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <input class="form-control" ng-model='item.descricao' name='descricao' required minlength='6'>
+                        <div ng-show='itemForm.descricao.$error.required && itemForm.descricao.$dirty' class='text-danger'>
+                            Necessário informar uma descrição
+                        </div>
+                        <div ng-show='itemForm.descricao.$error.minlength && itemForm.descricao.$dirty' class='text-danger'>
+                            Descrição deve ter pelo menos 6 caracteres
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Quantidade</label>
+                        <input type='number' class="form-control" ng-model='item.qtde' name='qtde' required min='1' max='999'>
+                        <div ng-show='(itemForm.qtde.$error.min || itemForm.qtde.$error.max) && itemForm.qtde.$dirty' class='text-danger'>
+                            Quantidade deve ser maior que 1 e menor que 999
+                        </div>
+                    </div>
+                    <button class='btn btn-danger' type='submit' ng-disabled="itemForm.$invalid">
+                        Adicionar
+                    </button>
+                </form>
+            </div>
+        </div>
+        <br/>
+        <h4 class='text-center' ng-hide='items.length > 0'>
+            Nenhum item na lista
+        </h4>
+        <ul class='nav nav-pills'>
+            <li ng-class="{ 'active' : filtro == 'todos' }">
+                <a ng-click='todos()'>Todos</a>
+            </li>
+            <li ng-class="{ 'active' : filtro == 'comprados' }">
+                <a ng-click='filtrarComprados()'>Comprados</a>
+            </li>
+            <li ng-class="{ 'active' : filtro == 'naocomprados' }">
+                <a ng-click='filtrarNaoComprados()'>Não Comprados</a>
+            </li>
+        </ul>
+        <div class='panel panel-default' ng-show='items.length > 0'>
+            <div class='panel-heading'>
+                Items da lista
+                <select ng-model='itemsOrder' class='pull-right'>
+                    <option value='+descricao'>Descrição</option>
+                    <option value='-qtde'>Quantidade</option>
+                    <option value='-dataCriacao'>Data de Criação</option>
+                </select>
+            </div>
+            <table class='table'>
+                <tr>
+                    <td>#</td>
+                    <td>Item</td>
+                    <td>Quantidade</td>
+                    <td>Data de Criação</td>
+                    <td></td>
+                </tr>
+                <tr ng-repeat="it in items track by it.id | orderBy: itemsOrder "
+                    ng-class="{ 'even': $even, 'odd': $odd }">
+                    <td>{{it.id}}</td>
+                    <td>{{it.descricao}}</td>
+                    <td>{{it.qtde}}</td>
+                    <td>{{it.dataCriacao | date:'dd/MM - HH:mm:ss' }}</td>
+                    <td>
+                        <button class='btn btn-xs btn-danger' ng-click="marcarComprado(it.id)" ng-hide='it.comprado'>Marcar como comprado</button>
+                        <span class='label label-success' ng-show='it.comprado'>Comprado</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</body>
+<script type="text/javascript" src="app/bower_components/angular/angular.js"></script>
+<script type="text/javascript" src='services.js'></script>
+<script type="text/javascript" src='controllers.js'></script>
+<script type="text/javascript" src='app.js'></script>
+</html>
