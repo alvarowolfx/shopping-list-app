@@ -44,14 +44,14 @@
             Nenhum item na lista
         </h4>
         <ul class='nav nav-pills'>
-            <li ng-class="{ 'active' : filtro == 'todos' }">
+            <li ng-class="{ 'active' : filtroAtivo == 'todos' } ">
                 <a ng-click='todos()'>Todos</a>
             </li>
-            <li ng-class="{ 'active' : filtro == 'comprados' }">
+            <li ng-class="{ 'active' : filtroAtivo == 'comprados' } ">
                 <a ng-click='filtrarComprados()'>Comprados</a>
             </li>
-            <li ng-class="{ 'active' : filtro == 'naocomprados' }">
-                <a ng-click='filtrarNaoComprados()'>Não Comprados</a>
+            <li ng-class="{ 'active' : filtroAtivo == 'naocomprados' } ">
+                <a ng-click='filtrarNaoComprados()'>Não comprados</a>
             </li>
         </ul>
         <div class='panel panel-default' ng-show='items.length > 0'>
